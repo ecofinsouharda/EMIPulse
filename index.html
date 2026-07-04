@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>EMIPulse</title>
 
@@ -19,25 +19,266 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
+
 <link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body>
 
+<!-- ================= SPLASH ================= -->
+
+<section id="screenSplash" class="screen active">
+
 <div class="splash">
 
-    <img src="assets/Ecofin New Small trans.png" class="logo">
+<img
+src="assets/Ecofin New Small trans.png"
+class="logo">
 
-    <h1>EMIPulse</h1>
+<h1>EMIPulse</h1>
 
-    <p>EMI Collections Simplified</p>
+<p>EMI Collections Simplified</p>
 
-    <small>Fintech by Arambh</small>
+<small>Fintech by Arambh</small>
 
 </div>
 
+</section>
+
+<!-- ================= LOGIN ================= -->
+
+<section id="screenLogin" class="screen">
+
+<div class="login-container">
+
+<div class="login-card">
+
+<img
+src="assets/Ecofin New Small trans.png"
+class="login-logo">
+
+<h2>EMIPulse</h2>
+
+<p class="subtitle">
+
+EMI Collections Simplified
+
+</p>
+
+<input
+type="text"
+id="collectorId"
+placeholder="Collector ID">
+
+<div class="password-box">
+
+<input
+type="password"
+id="password"
+placeholder="Password">
+
+<button
+id="togglePassword">
+
+👁
+
+</button>
+
+</div>
+
+<button
+id="loginBtn"
+class="primary-btn">
+
+LOGIN
+
+</button>
+
+<p id="status"></p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="screenDashboard" class="screen">
+
+<header class="header">
+
+<img
+src="assets/Ecofin New Small trans.png"
+class="header-logo">
+
+<div class="welcome">
+
+<h2 id="greeting">
+
+Good Morning
+
+</h2>
+
+<p id="collectorName">
+
+Loading...
+
+</p>
+
+</div>
+
+</header>
+
+<div class="balance-card">
+
+<p>Today's Collection</p>
+
+<h1 id="todayCollection">
+
+₹0
+
+</h1>
+
+<div class="stats">
+
+<div>
+
+<span id="todayReceipts">
+
+0
+
+</span>
+
+<small>Receipts</small>
+
+</div>
+
+<div>
+
+<span id="pendingEMI">
+
+0
+
+</span>
+
+<small>Pending EMI</small>
+
+</div>
+
+</div>
+
+</div>
+
+<h3 class="section-title">
+
+Quick Actions
+
+</h3>
+
+<div class="quick-grid">
+
+<button id="btnMembers">
+
+<span class="material-symbols-rounded">
+
+groups
+
+</span>
+
+Members
+
+</button>
+
+<button id="btnCollection">
+
+<span class="material-symbols-rounded">
+
+payments
+
+</span>
+
+Collect
+
+</button>
+
+<button id="btnReports">
+
+<span class="material-symbols-rounded">
+
+bar_chart
+
+</span>
+
+Reports
+
+</button>
+
+<button id="btnLogout">
+
+<span class="material-symbols-rounded">
+
+logout
+
+</span>
+
+Logout
+
+</button>
+
+</div>
+
+</section>
+
+<!-- ================= MEMBERS ================= -->
+
+<section id="screenMembers" class="screen">
+
+<div class="page-header">
+
+<button id="backDashboard">
+
+<span class="material-symbols-rounded">
+
+arrow_back
+
+</span>
+
+</button>
+
+<h2>
+
+Members
+
+</h2>
+
+</div>
+
+<div class="search-box">
+
+<input
+
+id="searchText"
+
+placeholder="Search Member"
+
+type="text">
+
+</div>
+
+<div id="memberList"></div>
+
+</section>
+
+<script src="js/api.js"></script>
+
 <script src="js/app.js"></script>
+
+<script src="js/dashboard.js"></script>
+
+<script src="js/members.js"></script>
 
 </body>
 
