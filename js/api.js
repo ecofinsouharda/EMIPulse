@@ -1,4 +1,4 @@
-const API_URL = "PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE";
+const API_URL = "https://script.google.com/macros/s/AKfycbwmCd0mOOLhx-x6ecksTwI-zji2aFRPpDUpF4oSIC9460K025fpipHDJxiC7i9Q6kQ/exec";
 
 async function api(action, data={}){
 
