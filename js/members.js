@@ -1,68 +1,127 @@
-async function searchMembers(){
+/************************************************
+ * EMIPulse Members (SPA)
+ ************************************************/
 
-const text=document
-.getElementById("searchText")
-.value
-.trim();
+/************************************************
+ * Search Members
+ ************************************************/
+async function searchMembers() {
 
-const result=
-await api(
-"searchMembers",
-{
-search:text
+    const text = document
+        .getElementById("searchText")
+        .value
+        .trim();
+
+    try {
+
+        const result = await api(
+            "searchMembers",
+            {
+                search: text
+            }
+        );
+
+        if (!result.success) {
+
+            document.getElementById("memberList").innerHTML =
+                "<p style='padding:20px;'>No members found.</p>";
+
+            return;
+
+        }
+
+        renderMembers(result.data);
+
+    }
+
+    catch (err) {
+
+        console.log(err);
+
+    }
+
 }
-);
 
-if(!result.success){
+/************************************************
+ * Render Member Cards
+ ************************************************/
+function renderMembers(members) {
 
-return;
+    const list = document.getElementById("memberList");
 
-}
+    if (!members || members.length === 0) {
 
-let html="";
+        list.innerHTML =
+            "<p style='padding:20px;'>No members found.</p>";
 
-result.data.forEach(function(member){
+        return;
 
-html+=`
+    }
 
-<div class="member-card"
+    let html = "";
 
-onclick="openMember('${member["Member ID"]}')">
+    members.forEach(function(member) {
 
-<h3>${member["Full Name"]}</h3>
+        html += `
 
-<p><b>Member :</b> ${member["Member ID"]}</p>
+<div class="member-card">
 
-<p><b>Loan :</b> ${member["Loan ID"]}</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
 
-<p><b>Mobile :</b> ${member["Mobile Number"]}</p>
+        <div>
 
-<p><b>Outstanding :</b>
+            <h3>${member["Full Name"]}</h3>
 
-₹ ${member["Outstanding"]}</p>
+            <p>${member["Member ID"]}</p>
+
+            <p>${member["Mobile Number"] || ""}</p>
+
+        </div>
+
+        <button
+            onclick="openCollection('${member["Member ID"]}')"
+            class="primary-btn">
+
+            Collect
+
+        </button>
+
+    </div>
 
 </div>
 
 `;
 
-});
+    });
+
+    list.innerHTML = html;
+
+}
+
+/************************************************
+ * Search While Typing
+ ************************************************/
 
 document
-.getElementById("memberList")
-.innerHTML=html;
-
-}
-
-function openMember(id){
-
-localStorage.setItem(
-"memberId",
-id
+.getElementById("searchText")
+.addEventListener(
+    "keyup",
+    searchMembers
 );
 
-window.location=
-"collection.html";
+/************************************************
+ * Open Collection
+ ************************************************/
+
+function openCollection(memberId){
+
+    localStorage.setItem(
+        "selectedMember",
+        memberId
+    );
+
+    alert(
+        "Collection Screen will open next.\n\nMember : " + memberId
+    );
 
 }
-
-searchMembers();
