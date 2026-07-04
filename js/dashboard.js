@@ -1,50 +1,67 @@
 /************************************************
- * EMIPulse Dashboard
+ * EMIPulse Dashboard (SPA)
  ************************************************/
 
-// Check Login
-const collector = JSON.parse(localStorage.getItem("collector"));
+let currentCollector = null;
 
-if (!collector) {
-    window.location.href = "login.html";
+/************************************************
+ * Initialize Dashboard
+ ************************************************/
+async function initDashboard() {
+
+    currentCollector = JSON.parse(
+        localStorage.getItem("collector")
+    );
+
+    if (!currentCollector) {
+        showScreen("login");
+        return;
+    }
+
+    document.getElementById("collectorName").innerHTML =
+        currentCollector.collectorName +
+        "<br><small>" +
+        currentCollector.branch +
+        "</small>";
+
+    setGreeting();
+
+    await loadDashboard();
+
 }
-
-// Collector Name
-document.getElementById("collectorName").innerHTML =
-    collector.collectorName + "<br><small>" +
-    collector.branch +
-    "</small>";
 
 /************************************************
  * Greeting
  ************************************************/
+function setGreeting() {
 
-const hour = new Date().getHours();
+    const hour = new Date().getHours();
 
-let greeting = "Good Morning";
+    let greeting = "Good Morning";
 
-if (hour >= 12 && hour < 17) {
-    greeting = "Good Afternoon";
+    if (hour >= 12 && hour < 17)
+        greeting = "Good Afternoon";
+
+    if (hour >= 17)
+        greeting = "Good Evening";
+
+    document.getElementById("greeting").innerHTML =
+        greeting;
+
 }
-
-if (hour >= 17) {
-    greeting = "Good Evening";
-}
-
-document.getElementById("greeting").innerHTML = greeting;
 
 /************************************************
  * Load Dashboard
  ************************************************/
-
-async function refreshDashboard() {
+async function loadDashboard() {
 
     try {
 
         const result = await api(
             "dashboard",
             {
-                collectorId: collector.collectorId
+                collectorId:
+                currentCollector.collectorId
             }
         );
 
@@ -57,13 +74,15 @@ async function refreshDashboard() {
         }
 
         document.getElementById("todayCollection").innerHTML =
-            "₹ " + Number(result.data.collection).toLocaleString("en-IN");
+            "₹ " +
+            Number(result.data.collection)
+            .toLocaleString("en-IN");
 
         document.getElementById("todayReceipts").innerHTML =
             result.data.receipts;
 
         document.getElementById("pendingEMI").innerHTML =
-            result.data.pendingEMI || 0;
+            result.data.pendingEMI;
 
     }
 
@@ -76,46 +95,3 @@ async function refreshDashboard() {
     }
 
 }
-
-/************************************************
- * Navigation
- ************************************************/
-
-function goCollection() {
-
-    window.location.href = "collection.html";
-
-}
-
-function goMembers() {
-
-    window.location.href = "members.html";
-
-}
-
-function goReports() {
-
-    window.location.href = "reports.html";
-
-}
-
-/************************************************
- * Logout
- ************************************************/
-
-function logout() {
-
-    if (!confirm("Logout from EMIPulse?"))
-        return;
-
-    localStorage.removeItem("collector");
-
-    window.location.href = "login.html";
-
-}
-
-/************************************************
- * Initialize
- ************************************************/
-
-refreshDashboard();
