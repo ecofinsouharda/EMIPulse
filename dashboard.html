@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard • EMIPulse</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <img
+        src="assets/Ecofin New Small trans.png"
+        class="header-logo">
+
+    <div class="welcome">
+
+        <h2 id="greeting">Good Morning</h2>
+
+        <p id="collectorName">
+            Loading...
+        </p>
+
+    </div>
+
+    <div class="profile-circle">
+
+        <span class="material-symbols-rounded">
+            account_circle
+        </span>
+
+    </div>
+
+</header>
+
+<section class="balance-card">
+
+    <p>Today's Collection</p>
+
+    <h1 id="todayCollection">
+
+        ₹0
+
+    </h1>
+
+    <div class="stats">
+
+        <div>
+
+            <span id="todayReceipts">0</span>
+
+            <small>Receipts</small>
+
+        </div>
+
+        <div>
+
+            <span id="pendingEMI">0</span>
+
+            <small>Pending EMI</small>
+
+        </div>
+
+    </div>
+
+</section>
+
+<h3 class="section-title">
+
+Quick Actions
+
+</h3>
+
+<section class="quick-grid">
+
+<button onclick="goCollection()">
+
+<span class="material-symbols-rounded">
+
+payments
+
+</span>
+
+Collect
+
+</button>
+
+<button onclick="goMembers()">
+
+<span class="material-symbols-rounded">
+
+groups
+
+</span>
+
+Members
+
+</button>
+
+<button onclick="goReports()">
+
+<span class="material-symbols-rounded">
+
+bar_chart
+
+</span>
+
+Reports
+
+</button>
+
+<button onclick="refreshDashboard()">
+
+<span class="material-symbols-rounded">
+
+refresh
+
+</span>
+
+Refresh
+
+</button>
+
+</section>
+
+<nav class="bottom-nav">
+
+<button class="active">
+
+<span class="material-symbols-rounded">
+
+home
+
+</span>
+
+Home
+
+</button>
+
+<button onclick="goMembers()">
+
+<span class="material-symbols-rounded">
+
+groups
+
+</span>
+
+Members
+
+</button>
+
+<button onclick="goCollection()">
+
+<span class="material-symbols-rounded">
+
+payments
+
+</span>
+
+Collect
+
+</button>
+
+<button onclick="goReports()">
+
+<span class="material-symbols-rounded">
+
+bar_chart
+
+</span>
+
+Reports
+
+</button>
+
+</nav>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
