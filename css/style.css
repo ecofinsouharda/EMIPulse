@@ -21,11 +21,11 @@ padding:20px;
 }
 
 .logo{
-width:120px;
-height:120px;
-object-fit:contain;
-margin-bottom:20px;
+width:180px;
+height:auto;
+margin-bottom:25px;
 animation:pop .8s ease;
+object-fit:contain;
 }
 
 h1{
@@ -78,8 +78,11 @@ text-align:center;
 }
 
 .login-logo{
-width:90px;
-margin-bottom:15px;
+width:150px;
+height:auto;
+margin:0 auto 20px;
+display:block;
+object-fit:contain;
 }
 
 .subtitle{
