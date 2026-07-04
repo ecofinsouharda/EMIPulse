@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Members • EMIPulse</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div class="page-header">
+
+<button class="back-btn" onclick="history.back()">
+
+<span class="material-symbols-rounded">
+
+arrow_back
+
+</span>
+
+</button>
+
+<h2>Members</h2>
+
+</div>
+
+<div class="search-box">
+
+<input
+
+id="searchText"
+
+type="text"
+
+placeholder="Search by Member ID, Loan ID, Mobile or Name"
+
+onkeyup="searchMembers()">
+
+</div>
+
+<div id="memberList">
+
+</div>
+
+<script src="js/api.js"></script>
+
+<script src="js/members.js"></script>
+
+</body>
+
+</html>
