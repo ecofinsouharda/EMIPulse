@@ -1,41 +1,46 @@
-const password = document.getElementById("password");
+/************************************************
+ * EMIPulse v1.0
+ * Authentication
+ ************************************************/
 
-document
-.getElementById("togglePassword")
-.onclick = () => {
+const passwordBox = document.getElementById("password");
 
-    password.type =
-    password.type === "password"
-    ? "text"
-    : "password";
+const toggle = document.getElementById("togglePassword");
 
-};
+if (toggle) {
 
-document
-.getElementById("loginBtn")
-.onclick = async function(){
+    toggle.onclick = function () {
 
-    const collectorId =
-    document
-    .getElementById("collectorId")
-    .value
-    .trim();
+        passwordBox.type =
+            passwordBox.type === "password"
+                ? "text"
+                : "password";
 
-    const password =
-    document
-    .getElementById("password")
-    .value;
+    };
 
-    const status =
-    document
-    .getElementById("status");
+}
 
-    status.innerHTML="Logging in...";
+document.getElementById("loginBtn").onclick = login;
 
-    try{
+async function login() {
 
-        const result =
-        await api(
+    const collectorId = document
+        .getElementById("collectorId")
+        .value
+        .trim();
+
+    const password = document
+        .getElementById("password")
+        .value
+        .trim();
+
+    const status = document.getElementById("loginMessage");
+
+    status.innerHTML = "Logging in...";
+
+    try {
+
+        const result = await api(
             "login",
             {
                 collectorId,
@@ -43,9 +48,9 @@ document
             }
         );
 
-        if(!result.success){
+        if (!result.success) {
 
-            status.innerHTML=result.message;
+            status.innerHTML = result.message;
 
             return;
 
@@ -56,14 +61,25 @@ document
             JSON.stringify(result.data)
         );
 
-        window.location="dashboard.html";
+        status.innerHTML = "";
+
+        showScreen("dashboard");
+
+        if (typeof initDashboard === "function") {
+
+            initDashboard();
+
+        }
 
     }
 
-    catch(e){
+    catch (e) {
 
-        status.innerHTML=e.message;
+        status.innerHTML =
+            "Unable to connect to server.";
+
+        console.log(e);
 
     }
 
-};
+}
