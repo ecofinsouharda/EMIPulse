@@ -1,30 +1,23 @@
 /************************************************
- * EMIPulse
- * App Controller (SPA)
+ * EMIPulse v1.0
+ * app.js
  ************************************************/
 
-const Screens = {
-
+const screens = {
     splash: document.getElementById("screenSplash"),
-
     login: document.getElementById("screenLogin"),
-
     dashboard: document.getElementById("screenDashboard"),
-
-    members: document.getElementById("screenMembers")
-
+    members: document.getElementById("screenMembers"),
+    collection: document.getElementById("screenCollection")
 };
 
 /************************************************
  * Hide All Screens
  ************************************************/
+function hideAllScreens() {
 
-function hideScreens(){
-
-    Object.values(Screens).forEach(function(screen){
-
+    Object.values(screens).forEach(function(screen) {
         screen.classList.remove("active");
-
     });
 
 }
@@ -32,117 +25,85 @@ function hideScreens(){
 /************************************************
  * Show Screen
  ************************************************/
+function showScreen(name) {
 
-function showScreen(name){
+    hideAllScreens();
 
-    hideScreens();
-
-    Screens[name].classList.add("active");
+    screens[name].classList.add("active");
 
 }
 
 /************************************************
- * App Startup
+ * App Start
  ************************************************/
+window.addEventListener("load", function () {
 
-window.onload=function(){
+    setTimeout(function () {
 
-    setTimeout(function(){
-
-        const collector=
-        JSON.parse(
+        const collector = JSON.parse(
             localStorage.getItem("collector")
         );
 
-        if(collector){
+        if (collector) {
 
             showScreen("dashboard");
 
-            if(typeof initDashboard==="function"){
-
+            if (typeof initDashboard === "function") {
                 initDashboard();
-
             }
 
-        }
-
-        else{
+        } else {
 
             showScreen("login");
 
         }
 
-    },2000);
+    }, 2000);
 
-};
+});
 
 /************************************************
- * Open Members
+ * Navigation
  ************************************************/
 
-document
-.getElementById("btnMembers")
-.onclick=function(){
+document.getElementById("btnMembers").onclick = function () {
 
     showScreen("members");
 
-    if(typeof searchMembers==="function"){
-
+    if (typeof searchMembers === "function") {
         searchMembers();
-
     }
 
 };
 
-/************************************************
- * Back To Dashboard
- ************************************************/
-
-document
-.getElementById("backDashboard")
-.onclick=function(){
+document.getElementById("btnBack").onclick = function () {
 
     showScreen("dashboard");
 
 };
 
-/************************************************
- * Collection
- ************************************************/
+document.getElementById("btnBackDashboard").onclick = function () {
 
-document
-.getElementById("btnCollection")
-.onclick=function(){
-
-    alert("Collection Screen - Next Module");
+    showScreen("dashboard");
 
 };
 
-/************************************************
- * Reports
- ************************************************/
+document.getElementById("btnCollection").onclick = function () {
 
-document
-.getElementById("btnReports")
-.onclick=function(){
-
-    alert("Reports - Coming Soon");
+    showScreen("collection");
 
 };
 
-/************************************************
- * Logout
- ************************************************/
+document.getElementById("btnReports").onclick = function () {
 
-document
-.getElementById("btnLogout")
-.onclick=function(){
+    alert("Reports will be added in Version 1.0");
 
-    if(!confirm("Logout?")){
+};
 
+document.getElementById("btnLogout").onclick = function () {
+
+    if (!confirm("Do you want to logout?"))
         return;
-
-    }
 
     localStorage.removeItem("collector");
 
