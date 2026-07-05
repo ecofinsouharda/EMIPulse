@@ -1,5 +1,5 @@
 /************************************************
- * EMIPulse Dashboard (SPA)
+ * EMIPulse Dashboard
  ************************************************/
 
 let currentCollector = null;
@@ -14,8 +14,11 @@ async function initDashboard() {
     );
 
     if (!currentCollector) {
+
         showScreen("login");
+
         return;
+
     }
 
     document.getElementById("collectorName").innerHTML =
@@ -24,29 +27,7 @@ async function initDashboard() {
         currentCollector.branch +
         "</small>";
 
-    setGreeting();
-
     await loadDashboard();
-
-}
-
-/************************************************
- * Greeting
- ************************************************/
-function setGreeting() {
-
-    const hour = new Date().getHours();
-
-    let greeting = "Good Morning";
-
-    if (hour >= 12 && hour < 17)
-        greeting = "Good Afternoon";
-
-    if (hour >= 17)
-        greeting = "Good Evening";
-
-    document.getElementById("greeting").innerHTML =
-        greeting;
 
 }
 
@@ -78,19 +59,13 @@ async function loadDashboard() {
             Number(result.data.collection)
             .toLocaleString("en-IN");
 
-        document.getElementById("todayReceipts").innerHTML =
-            result.data.receipts;
-
-        document.getElementById("pendingEMI").innerHTML =
-            result.data.pendingEMI;
-
     }
 
-    catch (err) {
+    catch(err){
 
         console.log(err);
 
-        alert("Unable to connect to server.");
+        alert("Unable to load dashboard.");
 
     }
 
