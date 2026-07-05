@@ -2,14 +2,13 @@
 let currentCollector = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('%cEMIPulse v1.0 Starting...', 'color: #2563EB; font-weight: bold;');
+    console.log('%cEMIPulse v1.0 - Phase 2 Starting...', 'color: #2563EB; font-weight: bold;');
 
     const savedCollector = localStorage.getItem('collector');
     if (savedCollector) {
         currentCollector = JSON.parse(savedCollector);
         showMainApp();
     } else {
-        // Splash → Login after 2 seconds
         setTimeout(() => {
             Utils.showScreen('login-screen');
         }, 2000);
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
     
     const collectorId = document.getElementById('collector-id').value.trim();
@@ -33,20 +32,25 @@ function handleLogin(e) {
         return;
     }
 
-    errorEl.textContent = 'Logging in...';
-    
-    // Demo Login
-    setTimeout(() => {
-        currentCollector = {
-            collectorId: collectorId,
-            name: collectorId,
-            branch: 'Main Branch',
-            role: 'Collector'
-        };
+    errorEl.textContent = 'Authenticating...';
+
+    try {
+        const result = await Api.post('login', { 
+            collectorId: collectorId, 
+            password: password 
+        });
         
-        localStorage.setItem('collector', JSON.stringify(currentCollector));
-        showMainApp();
-    }, 800);
+        if (result.status === 'success') {
+            currentCollector = result.data;
+            localStorage.setItem('collector', JSON.stringify(currentCollector));
+            Utils.showToast('Login Successful!', 'success');
+            showMainApp();
+        } else {
+            errorEl.textContent = result.message || 'Login failed';
+        }
+    } catch(err) {
+        errorEl.textContent = 'Connection error. Please check internet.';
+    }
 }
 
 function showMainApp() {
@@ -64,7 +68,8 @@ function renderBasicDashboard() {
         <div style="padding: 20px; text-align: center; margin-top: 40px;">
             <img src="assets/Ecofin New Small trans.png" style="width: 90px; border-radius: 50%; margin-bottom: 20px;">
             <h2>Welcome, ${currentCollector ? currentCollector.name : 'Collector'}</h2>
-            <p style="margin-top: 30px; color: #6B7280;">EMIPulse Phase 1 Ready</p>
+            <p>Branch: ${currentCollector ? currentCollector.branch : ''}</p>
+            <p style="margin-top: 30px; color: #6B7280;">EMIPulse Phase 2 Ready ✅</p>
             <button onclick="logout()" style="margin-top: 40px; padding: 12px 24px; background: #2563EB; color: white; border: none; border-radius: 12px;">Logout</button>
         </div>
     `;
@@ -74,3 +79,6 @@ function logout() {
     localStorage.removeItem('collector');
     location.reload();
 }
+
+// Make functions available
+window.logout = logout;
