@@ -13,18 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function handleLogin(e) {
-    e.preventDefault();
-    const collectorId = document.getElementById('collector-id').value.trim();
-    const errorEl = document.getElementById('login-error');
+  e.preventDefault();
+  const collectorId = document.getElementById('collector-id').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const errorEl = document.getElementById('login-error');
 
-    errorEl.textContent = 'Connecting...';
+  errorEl.textContent = 'Authenticating...';
 
-    // Demo login (Phase 1)
-    setTimeout(() => {
-        currentCollector = { collectorId, name: "Demo Collector", branch: "Main Branch" };
-        localStorage.setItem('collector', JSON.stringify(currentCollector));
-        showMainApp();
-    }, 800);
+  try {
+    const result = await Api.post('login', { collectorId, password });
+    
+    if (result.status === 'success') {
+      currentCollector = result.data;
+      localStorage.setItem('collector', JSON.stringify(currentCollector));
+      Utils.showToast('Login Successful!', 'success');
+      showMainApp();
+    } else {
+      errorEl.textContent = result.message || 'Login failed';
+    }
+  } catch(err) {
+    errorEl.textContent = 'Connection error. Check API URL.';
+  }
 }
 
 function showMainApp() {
