@@ -1,112 +1,46 @@
-/************************************************
- * EMIPulse v1.0
- * app.js
- ************************************************/
+let currentCollector = null;
 
-const screens = {
-    splash: document.getElementById("screenSplash"),
-    login: document.getElementById("screenLogin"),
-    dashboard: document.getElementById("screenDashboard"),
-    members: document.getElementById("screenMembers"),
-    collection: document.getElementById("screenCollection")
-};
-
-/************************************************
- * Hide All Screens
- ************************************************/
-function hideAllScreens() {
-
-    Object.values(screens).forEach(function(screen) {
-        screen.classList.remove("active");
-    });
-
-}
-
-/************************************************
- * Show Screen
- ************************************************/
-function showScreen(name) {
-
-    hideAllScreens();
-
-    screens[name].classList.add("active");
-
-}
-
-/************************************************
- * App Start
- ************************************************/
-window.addEventListener("load", function () {
-
-    setTimeout(function () {
-
-        const collector = JSON.parse(
-            localStorage.getItem("collector")
-        );
-
-        if (collector) {
-
-            showScreen("dashboard");
-
-            if (typeof initDashboard === "function") {
-                initDashboard();
-            }
-
-        } else {
-
-            showScreen("login");
-
-        }
-
-    }, 2000);
-
-});
-
-/************************************************
- * Navigation
- ************************************************/
-
-document.getElementById("btnMembers").onclick = function () {
-
-    showScreen("members");
-
-    if (typeof searchMembers === "function") {
-        searchMembers();
+document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('collector');
+    if (saved) {
+        currentCollector = JSON.parse(saved);
+        showMainApp();
+    } else {
+        setTimeout(() => Utils.showScreen('login-screen'), 1800);
     }
 
-};
+    document.getElementById('login-form').addEventListener('submit', handleLogin);
+});
 
-document.getElementById("btnBack").onclick = function () {
+async function handleLogin(e) {
+    e.preventDefault();
+    const collectorId = document.getElementById('collector-id').value.trim();
+    const errorEl = document.getElementById('login-error');
 
-    showScreen("dashboard");
+    errorEl.textContent = 'Connecting...';
 
-};
+    // Demo login (Phase 1)
+    setTimeout(() => {
+        currentCollector = { collectorId, name: "Demo Collector", branch: "Main Branch" };
+        localStorage.setItem('collector', JSON.stringify(currentCollector));
+        showMainApp();
+    }, 800);
+}
 
-document.getElementById("btnBackDashboard").onclick = function () {
+function showMainApp() {
+    document.getElementById('splash-screen').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-app').classList.remove('hidden');
+    Utils.showScreen('dashboard-screen');
+    renderBasicDashboard();
+}
 
-    showScreen("dashboard");
-
-};
-
-document.getElementById("btnCollection").onclick = function () {
-
-    showScreen("collection");
-
-};
-
-document.getElementById("btnReports").onclick = function () {
-
-    alert("Reports will be added in Version 1.0");
-
-};
-
-document.getElementById("btnLogout").onclick = function () {
-
-    if (!confirm("Do you want to logout?"))
-        return;
-
-    localStorage.removeItem("collector");
-
-    showScreen("login");
-
-};
+function renderBasicDashboard() {
+    document.getElementById('dashboard-screen').innerHTML = `
+        <div style="padding:20px;text-align:center;">
+            <img src="assets/Ecofin New Small trans.png" style="width:80px;border-radius:50%;margin-bottom:16px;">
+            <h2>Welcome, ${currentCollector ? currentCollector.name : 'Collector'}</h2>
+            <p>EMIPulse Phase 1 Complete ✅</p>
+        </div>
+    `;
+}
