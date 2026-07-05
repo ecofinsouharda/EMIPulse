@@ -3,82 +3,103 @@
  * Authentication
  ************************************************/
 
-const passwordBox = document.getElementById("password");
-
-const toggle = document.getElementById("togglePassword");
-
-if (toggle) {
-
-    toggle.onclick = function () {
-
-        passwordBox.type =
-            passwordBox.type === "password"
-                ? "text"
-                : "password";
-
-    };
-
-}
-
 document.getElementById("loginBtn").onclick = login;
 
-async function login() {
+document.getElementById("password").addEventListener("keypress", function(e){
 
-    const collectorId = document
+    if(e.key==="Enter"){
+
+        login();
+
+    }
+
+});
+
+async function login(){
+
+    const collectorId=document
         .getElementById("collectorId")
         .value
         .trim();
 
-    const password = document
+    const password=document
         .getElementById("password")
         .value
         .trim();
 
-    const status = document.getElementById("loginMessage");
+    const status=document.getElementById("loginMessage");
 
-    status.innerHTML = "Logging in...";
+    status.innerHTML="";
 
-    try {
+    if(collectorId===""){
 
-        const result = await api(
-            "login",
-            {
-                collectorId,
-                password
-            }
-        );
+        status.innerHTML="Enter Collector ID";
 
-        if (!result.success) {
+        return;
 
-            status.innerHTML = result.message;
+    }
+
+    if(password===""){
+
+        status.innerHTML="Enter Password";
+
+        return;
+
+    }
+
+    document.getElementById("loginBtn").disabled=true;
+
+    document.getElementById("loginBtn").innerHTML="Logging in...";
+
+    try{
+
+        const result=await api("login",{
+
+            collectorId:collectorId,
+
+            password:password
+
+        });
+
+        if(!result.success){
+
+            status.innerHTML=result.message;
+
+            document.getElementById("loginBtn").disabled=false;
+
+            document.getElementById("loginBtn").innerHTML="LOGIN";
 
             return;
 
         }
 
         localStorage.setItem(
-            "collector",
-            JSON.stringify(result.data)
-        );
 
-        status.innerHTML = "";
+            "collector",
+
+            JSON.stringify(result.data)
+
+        );
 
         showScreen("dashboard");
 
-        if (typeof initDashboard === "function") {
+        initDashboard();
 
-            initDashboard();
+        document.getElementById("loginBtn").disabled=false;
 
-        }
+        document.getElementById("loginBtn").innerHTML="LOGIN";
 
     }
 
-    catch (e) {
+    catch(err){
 
-        status.innerHTML =
-            "Unable to connect to server.";
+        console.log(err);
 
-        console.log(e);
+        status.innerHTML="Unable to connect to server.";
+
+        document.getElementById("loginBtn").disabled=false;
+
+        document.getElementById("loginBtn").innerHTML="LOGIN";
 
     }
 
